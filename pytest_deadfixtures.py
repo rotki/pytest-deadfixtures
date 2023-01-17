@@ -80,6 +80,7 @@ def get_fixtures(session):
             seen.add((fixturedef.argname, loc))
 
             module = fixturedef.func.__module__
+            doc = fixturedef.func.__doc__ or ""
 
             if (
                 not module.startswith("_pytest.")
@@ -87,6 +88,7 @@ def get_fixtures(session):
                 and not ("site-packages" in loc)
                 and not ("dist-packages" in loc)
                 and not ("<string>" in loc)
+                and not ("# pytest-deadfixtures ignore" in doc)
             ):
                 available.append(
                     AvailableFixture(
